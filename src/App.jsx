@@ -6,6 +6,7 @@ import './App.css';
 function App() {
   const [ catFacts, setCatFacts ] = useState([]);
   const factsCount = useRef(1);
+  const requiredFacts = 10;
 
   useEffect(() => {
     fetchCatFacts();
@@ -13,27 +14,30 @@ function App() {
   }, []);
 
   async function fetchCatFacts() {
-    // COMMT: will loop 10 times.
-    while (factsCount.current < 10) {
-      const newFact = await getCatFacts();
-      setCatFacts(prev => [...prev, newFact]);
-
-      factsCount.current+=1;
+    const prop = {
+      factsCount: factsCount.current,
+      requiredFacts: requiredFacts
     };
+    const newFact = await getCatFacts(prop);
+    setCatFacts(newFact);
 
+    factsCount.current+=1;
   };
 
   return (
     <div className="App">
       <h1>Cat Facts</h1>
       {
-        catFacts?.map((currFact, idx) => (
-          <CatFacts
-            idx={idx}
-            currFact={currFact}
-          />
-
-        ))
+        catFacts.length === requiredFacts ? (
+          catFacts?.map((currFact, idx) => (
+            <CatFacts
+              idx={idx}
+              currFact={currFact}
+            />
+          ))
+        ) : (
+          <p>Loading...</p>
+        )
       }
     </div>
   );

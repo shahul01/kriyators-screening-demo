@@ -5,10 +5,10 @@
  - CSS
  - Axios
 
-# Screenshots
+## Screenshots
   ![home.png](/assets/screenshots/home.png)
 
-<br />
+<br /><hr /><br />
 
 # Getting Started with Create React App
 
