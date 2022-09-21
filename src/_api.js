@@ -8,16 +8,13 @@ async function getCatFact() {
 };
 
 export async function getCatFacts(prop) {
-  let currCount = prop.factsCount;
-  let catFacts = [];
+  const catFacts = new Array(prop.requiredFacts).fill({});
 
-  while (currCount <= prop.requiredFacts) {
-    const newCatFact = await getCatFact();
-    catFacts = [...catFacts, newCatFact];
-    console.log(`catFacts: `, catFacts);
+  const catFactsRes = await Promise.all(
+    catFacts?.map(async () => {
+      return await getCatFact();
+    }
+  ));
 
-    currCount+=1;
-  };
-
-  return catFacts;
-}
+  return catFactsRes;
+};

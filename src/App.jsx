@@ -4,31 +4,38 @@ import { getCatFacts } from './_api';
 import './App.css';
 
 function App() {
-  const [ catFacts, setCatFacts ] = useState([]);
-  const factsCount = useRef(1);
   const requiredFacts = 10;
+  const firstLoad = useRef(true);
+  const [ catFacts, setCatFacts ] = useState([]);
+
 
   useEffect(() => {
-    fetchCatFacts();
+    if (firstLoad.current) {
+      fetchCatFacts();
+
+      firstLoad.current = false;
+    };
 
   }, []);
 
   async function fetchCatFacts() {
     const prop = {
-      factsCount: factsCount.current,
       requiredFacts: requiredFacts
     };
-    const newFact = await getCatFacts(prop);
-    setCatFacts(newFact);
+    function newFactProm() {
+      return getCatFacts(prop);
+    };
+    newFactProm().then((res,rej) => {
+      setCatFacts(res);
+    });
 
-    factsCount.current+=1;
   };
 
   return (
     <div className="App">
       <h1>Cat Facts</h1>
       {
-        catFacts.length === requiredFacts ? (
+        catFacts?.length === requiredFacts ? (
           catFacts?.map((currFact, idx) => (
             <CatFacts
               idx={idx}
