@@ -22,12 +22,18 @@ function App() {
     const prop = {
       requiredFacts: requiredFacts
     };
-    function newFactProm() {
-      return getCatFacts(prop);
-    };
-    newFactProm().then((res,rej) => {
-      setCatFacts(res);
-    });
+
+    // COMMT: promise
+    // function newFactProm() {
+    //   return getCatFacts(prop);
+    // };
+    // newFactProm().then((res,rej) => {
+    //   setCatFacts(res);
+    // });
+
+    // COMMT: await
+    const fetchedData = await getCatFacts(prop);
+    setCatFacts(fetchedData);
 
   };
 
